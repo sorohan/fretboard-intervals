@@ -34,31 +34,31 @@ export enum Interval {
 export enum Note {
   Ab = 0,
   A = 1,
-  As = 2,
+  'A#' = 2,
 
   Bb = 2,
   B = 3,
-  Bs = 4,
+  'B#' = 4,
 
   Cb = 3,
   C = 4,
-  Cs = 5,
+  'C#' = 5,
 
   Db = 5,
   D = 6,
-  Ds = 7,
+  'D#' = 7,
 
   Eb = 7,
   E = 8,
-  Es = 9,
+  'E#' = 9,
 
   Fb = 8,
   F = 9,
-  Fs = 10,
+  'F#' = 10,
 
   Gb = 10,
   G = 11,
-  Gs = 0,
+  'G#' = 0,
 }
 
 export const TuningPresets = {
