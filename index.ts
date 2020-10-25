@@ -178,6 +178,7 @@ export const subtractInterval = (
   return Note[Note[n] as keyof typeof Note];
 };
 
+// @todo
 export const isReachable = (
   tuning: Tuning,
   fromPosition: FretboardPosition,

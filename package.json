@@ -1,9 +1,10 @@
 {
   "name": "fretboard-intervals",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
     "test": "tape -r ts-node/register **/*.test.ts"
   },
   "keywords": [],
