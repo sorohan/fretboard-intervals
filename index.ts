@@ -1,4 +1,3 @@
-
 /**
  * See https://en.wikipedia.org/wiki/Interval_(music)#Main_intervals
  */
@@ -73,8 +72,8 @@ export const TuningPresets = {
       [6, Note.E],
     ]),
     frets: 15,
-  }
-}
+  },
+};
 
 /**
  * String position should be starting at 1 for highest pitch (thinnest) string
@@ -84,7 +83,7 @@ export type Fret = number;
 
 /**
  * This doesn't really support weird tuning like a 5 string banjo
- * 
+ *
  * @todo: support different length strings
  */
 export interface Tuning {
@@ -104,21 +103,33 @@ export type Fretboard = Array<FretboardPosition>;
 /**
  * @todo: allow startNote to just be FretboardPosition, and assume interval of P1
  */
-export const getIntervalPositions = (tuning: Tuning, startNote: FretboardInterval, interval: Interval): Array<FretboardPosition> =>
+export const getIntervalPositions = (
+  tuning: Tuning,
+  startNote: FretboardInterval,
+  interval: Interval
+): Array<FretboardPosition> =>
   getAllIntervals(tuning, startNote)
-    .filter(fretInterval => fretInterval.interval === interval)
-    .map(fretInterval => fretInterval.position);
+    .filter((fretInterval) => fretInterval.interval === interval)
+    .map((fretInterval) => fretInterval.position);
 
-export const getAllIntervals = (tuning: Tuning, startNote: FretboardInterval): Array<FretboardInterval> =>
-  getFretboard(tuning)
-    .map((position: FretboardPosition): FretboardInterval => ({
+export const getAllIntervals = (
+  tuning: Tuning,
+  startNote: FretboardInterval
+): Array<FretboardInterval> =>
+  getFretboard(tuning).map(
+    (position: FretboardPosition): FretboardInterval => ({
       position,
       interval: getInterval(tuning, startNote, position),
-    }));
+    })
+  );
 
 export const getFretboard = (tuning: Tuning): Fretboard => {
   const fretboard: Fretboard = [];
-  for (let stringPosition: StringPosition = 1; stringPosition < tuning.strings.size; stringPosition++) {
+  for (
+    let stringPosition: StringPosition = 1;
+    stringPosition <= tuning.strings.size;
+    stringPosition++
+  ) {
     for (let fret: Fret = 0; fret <= tuning.frets; fret++) {
       fretboard.push([stringPosition, fret]);
     }
@@ -126,17 +137,29 @@ export const getFretboard = (tuning: Tuning): Fretboard => {
   return fretboard;
 };
 
-export const getInterval = (tuning: Tuning, from: FretboardInterval, to: FretboardPosition): Interval => {
-  const rootNote = subtractInterval(fretboardNote(tuning, from.position), from.interval);
+export const getInterval = (
+  tuning: Tuning,
+  from: FretboardInterval,
+  to: FretboardPosition
+): Interval => {
+  const rootNote = subtractInterval(
+    fretboardNote(tuning, from.position),
+    from.interval
+  );
   const toNote = fretboardNote(tuning, to);
   return noteInterval(rootNote, toNote);
 };
 
-export const noteInterval = (fromNote: Note, toNote: Note): Interval => (toNote + 12 - fromNote) % 12;
+export const noteInterval = (fromNote: Note, toNote: Note): Interval =>
+  (toNote + 12 - fromNote) % 12;
 
-export const fretboardNote = (tuning: Tuning, fret: FretboardPosition): Note => addInterval(stringNote(tuning.strings, fret[0]), fret[1]);
+export const fretboardNote = (tuning: Tuning, fret: FretboardPosition): Note =>
+  addInterval(stringNote(tuning.strings, fret[0]), fret[1]);
 
-export const stringNote = (strings: Map<StringPosition, Note>, stringN: number): Note => {
+export const stringNote = (
+  strings: Map<StringPosition, Note>,
+  stringN: number
+): Note => {
   const note = strings.get(stringN);
   if (note === undefined) {
     throw new Error(`No string ${stringN}`);
@@ -144,11 +167,19 @@ export const stringNote = (strings: Map<StringPosition, Note>, stringN: number):
   return note;
 };
 
-export const addInterval = (stringNote: Note, interval: Interval): Note => Note[(Note[((stringNote + interval) % 12)] as keyof typeof Note)];
+export const addInterval = (stringNote: Note, interval: Interval): Note =>
+  Note[Note[(stringNote + interval) % 12] as keyof typeof Note];
 
-export const subtractInterval = (stringNote: Note, interval: Interval): Note => {
-  const n = (((stringNote + 12) - (interval % 12)) % 12);
-  return Note[(Note[n] as keyof typeof Note)];
+export const subtractInterval = (
+  stringNote: Note,
+  interval: Interval
+): Note => {
+  const n = (stringNote + 12 - (interval % 12)) % 12;
+  return Note[Note[n] as keyof typeof Note];
 };
 
-export const isReachable = (tuning: Tuning, fromPosition: FretboardPosition, toPosition: FretboardPosition): boolean => true;
+export const isReachable = (
+  tuning: Tuning,
+  fromPosition: FretboardPosition,
+  toPosition: FretboardPosition
+): boolean => true;
